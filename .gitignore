@@ -1,1 +1,11 @@
 **\.deps
+**\.libs
+*.o
+*.lo
+*.pc
+
+Makefile
+/config.*
+/libtool
+/src/libmpfr.la
+/src/mparam.h
