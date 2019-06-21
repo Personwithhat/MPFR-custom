@@ -230,7 +230,7 @@ mpfr_set_d (mpfr_ptr r, double d, mpfr_rnd_t rnd_mode)
   /* warning: don't use tmp=r here, even if SIZE(r) >= MPFR_LIMBS_PER_DOUBLE,
      since PREC(r) may be different from PREC(tmp), and then both variables
      would have same precision in the mpfr_set4 call below. */
-  MPFR_MANT(tmp) = tmpmant;
+  MPFR_SET_MANT(tmp) = tmpmant;
   MPFR_PREC(tmp) = IEEE_DBL_MANT_DIG;
 
   /* don't use MPFR_SET_EXP here since the exponent may be out of range */

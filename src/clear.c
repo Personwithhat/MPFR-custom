@@ -27,5 +27,5 @@ mpfr_clear (mpfr_ptr m)
 {
   mpfr_free_func (MPFR_GET_REAL_PTR (m),
                       MPFR_MALLOC_SIZE (MPFR_GET_ALLOC_SIZE (m)));
-  MPFR_MANT (m) = (mp_limb_t *) 0;
+  MPFR_SET_MANT (m) = (mp_limb_t *) 0;
 }

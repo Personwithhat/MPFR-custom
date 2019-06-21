@@ -832,9 +832,17 @@ union ieee_double_decimal64 { double d; _Decimal64 d64; };
 #define MPFR_PREC2LIMBS(p) \
   (MPFR_ASSERTD ((p) >= 1), ((p) - 1) / GMP_NUMB_BITS + 1)
 
+/*
+	POD support assumes custom allocation management by owning application, using the stack interface.
+	With mpfr_t and m_buffer in contiguous memory (mfpr_t before buffer), along with _mpfr_d set to 0 on initialization.
+*/
+#define MPFR_IS_POD(x)    ((x)->_mpfr_d == 0)
+
 #define MPFR_PREC(x)      ((x)->_mpfr_prec)
 #define MPFR_EXP(x)       ((x)->_mpfr_exp)
-#define MPFR_MANT(x)      ((x)->_mpfr_d)
+#define MPFR_SET_MANT(x)  ((x)->_mpfr_d)
+#define MPFR_MANT(x)      (MPFR_IS_POD(x) ? (mp_limb_t*)((char *)(x) + sizeof(mpfr_t)) : (x)->_mpfr_d)
+
 #define MPFR_GET_PREC(x)  MPFR_PREC_IN_RANGE (MPFR_PREC (x))
 #define MPFR_LAST_LIMB(x) ((MPFR_GET_PREC (x) - 1) / GMP_NUMB_BITS)
 #define MPFR_LIMB_SIZE(x) (MPFR_LAST_LIMB (x) + 1)
@@ -1151,9 +1159,9 @@ typedef union { mp_size_t s; mp_limb_t l; } mpfr_size_limb_t;
 #define MPFR_MALLOC_SIZE(s) \
   (sizeof(mpfr_size_limb_t) + MPFR_BYTES_PER_MP_LIMB * (size_t) (s))
 #define MPFR_SET_MANT_PTR(x,p) \
-  (MPFR_MANT(x) = (mp_limb_t *) ((mpfr_size_limb_t *) (p) + 1))
+  (MPFR_SET_MANT(x) = (mp_limb_t *) ((mpfr_size_limb_t *) (p) + 1))
 #define MPFR_GET_REAL_PTR(x) \
-  ((mp_limb_t *) ((mpfr_size_limb_t *) MPFR_MANT(x) - 1))
+  (MPFR_ASSERTN(!MPFR_IS_POD(x)), (void *)((mpfr_size_limb_t *)(void *)MPFR_MANT(x) - 1))
 
 /* Temporary memory handling */
 #ifndef TMP_SALLOC
@@ -1177,7 +1185,7 @@ typedef union { mp_size_t s; mp_limb_t l; } mpfr_size_limb_t;
  * since only functions dealing with the Heap care about it */
 #define MPFR_TMP_INIT1(xp, x, p)                                     \
  ( MPFR_PREC(x) = (p),                                               \
-   MPFR_MANT(x) = (xp),                                              \
+   MPFR_SET_MANT(x) = (xp),                                          \
    MPFR_SET_POS(x),                                                  \
    MPFR_SET_INVALID_EXP(x))
 
@@ -1187,13 +1195,13 @@ typedef union { mp_size_t s; mp_limb_t l; } mpfr_size_limb_t;
 
 #define MPFR_TMP_INIT_ABS(d, s)                                      \
  ( MPFR_PREC(d) = MPFR_PREC(s),                                      \
-   MPFR_MANT(d) = MPFR_MANT(s),                                      \
+   MPFR_SET_MANT(d) = MPFR_MANT(s),                                  \
    MPFR_SET_POS(d),                                                  \
    MPFR_EXP(d)  = MPFR_EXP(s))
 
 #define MPFR_TMP_INIT_NEG(d, s)                                      \
  ( MPFR_PREC(d) = MPFR_PREC(s),                                      \
-   MPFR_MANT(d) = MPFR_MANT(s),                                      \
+   MPFR_SET_MANT(d) = MPFR_MANT(s),                                  \
    MPFR_SET_OPPOSITE_SIGN(d,s),                                      \
    MPFR_EXP(d)  = MPFR_EXP(s))
 
@@ -1485,7 +1493,7 @@ do {                                                                  \
       MPFR_PREC(y) = MPFR_PREC(x);              \
       MPFR_SIGN(y) = (s);                       \
       MPFR_EXP(y) = (e);                        \
-      MPFR_MANT(y) = MPFR_MANT(x);              \
+      MPFR_SET_MANT(y) = MPFR_MANT(x);          \
     } while (0)
 
 /* Size of an array, as a constant expression. */

@@ -104,10 +104,10 @@ main (void)
       if (!mpfr_check(a)) PRINT_ERROR ("exp 0");
       /* Check Mantissa */
       p = MPFR_MANT(a);
-      MPFR_MANT (a) = NULL;
+      MPFR_SET_MANT (a) = NULL;
       if (mpfr_check (a))
         PRINT_ERROR ("Mantissa Null Ptr");
-      MPFR_MANT (a) = p;
+      MPFR_SET_MANT (a) = p;
       /* Check size */
       s = MPFR_GET_ALLOC_SIZE (a);
       MPFR_SET_ALLOC_SIZE (a, 0);

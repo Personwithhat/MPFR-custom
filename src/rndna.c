@@ -100,7 +100,7 @@ mpfr_round_nearest_away_begin (mpfr_t rop)
   /* Create tmp as a proper NAN. */
   MPFR_PREC(tmp) = p;                           /* Set prec */
   MPFR_SET_POS(tmp);                            /* Set a sign */
-  MPFR_MANT(tmp) =  (mp_limb_t*)(ext+MANTISSA); /* Set Mantissa ptr */
+  MPFR_SET_MANT(tmp) =  (mp_limb_t*)(ext+MANTISSA); /* Set Mantissa ptr */
   MPFR_SET_NAN(tmp);                            /* initializes to NaN */
 
   /* Note: This full initialization to NaN may be unnecessary because of
@@ -148,7 +148,7 @@ mpfr_round_nearest_away_end (mpfr_t rop, int inex)
   MPFR_PREC(rop) = ext[OLD_PREC].pr;
   MPFR_SIGN(rop) = ext[OLD_SIGN].sg;
   MPFR_EXP(rop)  = ext[OLD_EXPONENT].ex;
-  MPFR_MANT(rop) = ext[OLD_MANTISSA].pi;
+  MPFR_SET_MANT(rop) = ext[OLD_MANTISSA].pi;
   MPFR_ASSERTD(MPFR_PREC(tmp) == MPFR_PREC(rop)+1);
 
   /* Restore the saved context. */

@@ -893,14 +893,14 @@ mpfr_mul (mpfr_ptr a, mpfr_srcptr b, mpfr_srcptr c, mpfr_rnd_t rnd_mode)
             MPFR_SET_SAME_SIGN (b_tmp, b);
             MPFR_SET_EXP (b_tmp, MPFR_GET_EXP (b));
             MPFR_PREC (b_tmp) = bn * GMP_NUMB_BITS;
-            MPFR_MANT (b_tmp) = bp;
+            MPFR_SET_MANT (b_tmp) = bp;
 
             if (b != c)
               {
                 MPFR_SET_SAME_SIGN (c_tmp, c);
                 MPFR_SET_EXP (c_tmp, MPFR_GET_EXP (c));
                 MPFR_PREC (c_tmp) = cn * GMP_NUMB_BITS;
-                MPFR_MANT (c_tmp) = cp;
+                MPFR_SET_MANT (c_tmp) = cp;
 
                 /* Call again mpfr_mul with the fixed arguments */
                 return mpfr_mul (a, b_tmp, c_tmp, rnd_mode);

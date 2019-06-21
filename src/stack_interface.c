@@ -54,7 +54,7 @@ mpfr_custom_get_exp (mpfr_srcptr x)
 void
 mpfr_custom_move (mpfr_ptr x, void *new_position)
 {
-  MPFR_MANT (x) = (mp_limb_t *) new_position;
+  MPFR_SET_MANT (x) = (mp_limb_t *) new_position;
 }
 
 #undef mpfr_custom_init_set
@@ -84,7 +84,7 @@ mpfr_custom_init_set (mpfr_ptr x, int kind, mpfr_exp_t exp,
   MPFR_PREC (x) = prec;
   MPFR_SET_SIGN (x, s);
   MPFR_EXP (x) = e;
-  MPFR_MANT (x) = (mp_limb_t*) mantissa;
+  MPFR_SET_MANT (x) = (mp_limb_t*) mantissa;
   return;
 }
 

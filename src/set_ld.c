@@ -108,7 +108,7 @@ mpfr_set_ld (mpfr_ptr r, long double d, mpfr_rnd_t rnd_mode)
   /* now d is neither 0, nor NaN nor Inf */
   MPFR_SAVE_EXPO_MARK (expo);
 
-  MPFR_MANT (tmp) = tmpmant;
+  MPFR_SET_MANT (tmp) = tmpmant;
   MPFR_PREC (tmp) = 64;
 
   /* Extract sign */

@@ -27,6 +27,8 @@ https://www.gnu.org/licenses/ or write to the Free Software Foundation, Inc.,
 void
 mpfr_swap (mpfr_ptr u, mpfr_ptr v)
 {
+  MPFR_ASSERTN(!(MPFR_IS_POD(u) || MPFR_IS_POD(v)));
+
   mpfr_prec_t p1, p2;
   mpfr_sign_t s1, s2;
   mpfr_exp_t e1, e2;
@@ -49,6 +51,6 @@ mpfr_swap (mpfr_ptr u, mpfr_ptr v)
 
   m1 = MPFR_MANT(u);
   m2 = MPFR_MANT(v);
-  MPFR_MANT(v) = m1;
-  MPFR_MANT(u) = m2;
+  MPFR_SET_MANT(v) = m1;
+  MPFR_SET_MANT(u) = m2;
 }

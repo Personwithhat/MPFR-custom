@@ -143,8 +143,8 @@ mpfr_fma (mpfr_ptr s, mpfr_srcptr x, mpfr_srcptr y, mpfr_srcptr z,
 
           umul_ppmm (umant[1], umant[0], MPFR_MANT(x)[0], MPFR_MANT(y)[0]);
           MPFR_PREC(u) = MPFR_PREC(zz) = 2 * precx;
-          MPFR_MANT(u) = umant;
-          MPFR_MANT(zz) = zmant;
+          MPFR_SET_MANT(u) = umant;
+          MPFR_SET_MANT(zz) = zmant;
           MPFR_SIGN(u) = MPFR_MULT_SIGN( MPFR_SIGN(x) , MPFR_SIGN(y) );
           MPFR_SIGN(zz) = MPFR_SIGN(z);
           MPFR_EXP(zz) = MPFR_EXP(z);
