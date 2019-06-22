@@ -1,0 +1,8 @@
+## To build:
+cd "D:\Github\MPFR-custom" &&\
+./configure --with-gmp-build=../gmp-6.1.2 --prefix=/Libraries/MPFR --disable-shared --enable-static --enable-thread-safe --enable-warnings --enable-assert &&\
+make clean && make && make install
+
+## Force overwrite new lib and then rename.
+cp -r "C:\msys64\Libraries\MPFR" "D:\Github\MY_PROJECT\Code\SDKs" &&\
+mv "D:\Github\MY_PROJECT\Code\SDKs\MPFR\lib\libmpfr.a" "D:\Github\MY_PROJECT\Code\SDKs\MPFR\lib\libmpfr.lib"
